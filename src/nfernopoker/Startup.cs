@@ -4,8 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using SmallOauth1;
-using nfernopoker.Domain.Apis;
-using nfernopoker.Domain.Services;
 using nfernopoker.Config;
 
 namespace nfernopoker
@@ -23,6 +21,7 @@ namespace nfernopoker
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddMvc();
+      services.AddHttpClient();
 
       // In production, the React files will be served from this directory
       services.AddSpaStaticFiles(configuration =>
@@ -36,7 +35,7 @@ namespace nfernopoker
         Configuration.GetSection("AuthenticationConfig").Bind(config);
 
         JiraConfig jiraConfig = new JiraConfig();
-        Configuration.GetSection("JiraConfig").Bind(config);
+        Configuration.GetSection("JiraConfig").Bind(jiraConfig);
 
         config.SmallOauthConfig.SigningKey = reader.ReadToEnd();
 
@@ -44,12 +43,6 @@ namespace nfernopoker
         services.AddSingleton<AuthenticationConfig>(config);
         services.AddSingleton<JiraConfig>(jiraConfig);
       }
-
-      string baseAddress = "https://nfernopoker.atlassian.net/rest/api/latest";
-
-      services.AddSingleton<IRestClientFactory>(sp => new RestClientFactory());
-
-      services.AddSingleton<IJiraApi>(sp => new JiraApi(sp.GetService<IRestClientFactory>(), baseAddress));
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

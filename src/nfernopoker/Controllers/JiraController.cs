@@ -3,27 +3,29 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using nfernopoker.Config;
-using nfernopoker.Domain.Apis;
 using SmallOauth1;
-using SmallOauth1.Utilities;
 
 namespace nfernopoker.Controllers
 {
   [Route("api/[controller]")]
   public class JiraController : Controller
   {
-    private readonly IJiraApi _jiraApi;
     private readonly ISmallOauth _smallOauth;
-    private static AccessTokenInfo _accessToken;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly AuthenticationConfig _config;
     private readonly JiraConfig _jiraConfig;
+    private readonly HttpClient _client;
 
-    public JiraController(IJiraApi jiraApi, ISmallOauth tinyOAuth, AuthenticationConfig config, JiraConfig jiraConfig)
+    private static AccessTokenInfo _accessToken; // TODO: Store this persistently?
+
+    public JiraController(ISmallOauth tinyOAuth, AuthenticationConfig config, JiraConfig jiraConfig, IHttpClientFactory httpClientFactory)
     {
-      _jiraApi = jiraApi ?? throw new ArgumentNullException(nameof(jiraApi));
       _smallOauth = tinyOAuth ?? throw new ArgumentNullException(nameof(tinyOAuth));
-      _config = config;
-      _jiraConfig = jiraConfig;
+      _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+      _config = config ?? throw new ArgumentNullException(nameof(config));
+      _jiraConfig = jiraConfig ?? throw new ArgumentNullException(nameof(jiraConfig));
+
+      _client = _httpClientFactory.CreateClient("client");
     }
 
     [HttpGet]
@@ -47,20 +49,25 @@ namespace nfernopoker.Controllers
     [HttpGet("issue/{id}")]
     public async Task<JsonResult> GetIssueById(string id)
     {
-      var httpClient = new HttpClient(new SmallOauthMessageHandler(_config.SmallOauthConfig, _accessToken.AccessToken, _accessToken.AccessTokenSecret));
-
-      var resp = await httpClient.GetAsync($"{_jiraConfig.BaseUrl}/issue/{id}.json");
-      return Json(await resp.Content.ReadAsStringAsync());
+      return Json(await SendRequest($"issue/{id}.json"));
     }
 
-    [HttpGet("issues")]
+    [HttpGet("issues/{projectKey}")]
     public async Task<JsonResult> GetIssues(string projectKey)
     {
-      var httpClient = new HttpClient(new SmallOauthMessageHandler(_config.SmallOauthConfig, _accessToken.AccessToken, _accessToken.AccessTokenSecret));
+      return Json(await SendRequest($"search?jql=project%3D{Uri.EscapeUriString(projectKey)}&maxResults%3D-1"));
+    }
 
-      string url = $"{_jiraConfig.BaseUrl}/search?jql=project%3D{Uri.EscapeUriString(projectKey)}&maxResults%3D-1";
-      var resp = await httpClient.GetAsync(url);
-      return Json(await resp.Content.ReadAsStringAsync());
+    // TODO: Abstract this into a generic proxy service
+    private async Task<string> SendRequest(string uri)
+    {
+      string url = $"{_jiraConfig.BaseUrl}/{uri}";
+      var request = new HttpRequestMessage(HttpMethod.Get, url);
+      request.Headers.Authorization = _smallOauth.GetAuthorizationHeader(_accessToken.AccessToken, _accessToken.AccessTokenSecret, url, HttpMethod.Get);
+
+      var response = await _client.SendAsync(request);
+
+      return await response.Content.ReadAsStringAsync();
     }
   }
 }
