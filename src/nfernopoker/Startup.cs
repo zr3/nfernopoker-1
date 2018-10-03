@@ -6,6 +6,7 @@ using System.IO;
 using SmallOauth1;
 using nfernopoker.Domain.Apis;
 using nfernopoker.Domain.Services;
+using nfernopoker.Config;
 
 namespace nfernopoker
 {
@@ -31,20 +32,17 @@ namespace nfernopoker
 
       using (var reader = File.OpenText("jira_privatekey.pem"))
       {
-        var config = new SmallOauthConfig
-        {
-          AccessTokenUrl = "https://nfernopoker.atlassian.net/plugins/servlet/oauth/access-token",
-          AuthorizeTokenUrl = "https://nfernopoker.atlassian.net/plugins/servlet/oauth/authorize",
-          RequestTokenUrl = "https://nfernopoker.atlassian.net/plugins/servlet/oauth/request-token",
-          ConsumerKey = "nfernopoker2",
-          ConsumerSecret = "nfernopoker2",
-          SignatureMethod = "RSA-SHA1",
-          SigningKey = reader.ReadToEnd(),
-          OauthCallback = "http://localhost:52690/api/jira/callback"
-        };
+        AuthenticationConfig config = new AuthenticationConfig();
+        Configuration.GetSection("AuthenticationConfig").Bind(config);
 
-        services.AddSingleton<ISmallOauth>(sp => new SmallOauth(config));
-        services.AddSingleton<SmallOauthConfig>(config);
+        JiraConfig jiraConfig = new JiraConfig();
+        Configuration.GetSection("JiraConfig").Bind(config);
+
+        config.SmallOauthConfig.SigningKey = reader.ReadToEnd();
+
+        services.AddSingleton<ISmallOauth>(sp => new SmallOauth(config.SmallOauthConfig));
+        services.AddSingleton<AuthenticationConfig>(config);
+        services.AddSingleton<JiraConfig>(jiraConfig);
       }
 
       string baseAddress = "https://nfernopoker.atlassian.net/rest/api/latest";
