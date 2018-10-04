@@ -26,11 +26,6 @@
 		* bitbucket
 		* github
 		* gitlab
-	* MIT license
 	* expose REST API
-
-
-
-
 
 *neat!
