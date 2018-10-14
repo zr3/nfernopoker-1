@@ -10,7 +10,7 @@ module.exports = webpackMerge(commonConfig, {
   devtool: 'eval',
   devServer: {
     hot: true,
-    https: true,
+    https: false,
     historyApiFallback: true,
     host: "127.0.0.1",
     noInfo: false,

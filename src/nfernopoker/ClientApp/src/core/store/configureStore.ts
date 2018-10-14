@@ -1,7 +1,7 @@
 import { routerMiddleware, routerReducer } from 'react-router-redux';
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { reactReduxFirebase, firebaseReducer } from 'react-redux-firebase';
+import { reactReduxFirebase, firebaseReducer, getFirebase } from 'react-redux-firebase';
 import * as firebase from "firebase";
 import * as SnackMessage from "../actions/SnackMessage";
 
@@ -38,7 +38,7 @@ export default function configureStore(history: any, initialState: any) {
   };
 
   const middleware = [
-    thunk,
+    thunk.withExtraArgument(getFirebase),
     routerMiddleware(history)
   ];
 

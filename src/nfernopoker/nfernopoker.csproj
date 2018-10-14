@@ -27,7 +27,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\core\models\tfs-work-items.ts" />
+    <None Remove="ClientApp\src\scenes\new-game\actions.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="ClientApp\src\scenes\new-game\actions.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\nfernopoker.Domain\nfernopoker.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\core\models\tfs-work-items.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

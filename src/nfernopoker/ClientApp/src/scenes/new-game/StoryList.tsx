@@ -1,14 +1,22 @@
 import * as React from "react";
-import { Avatar, List, ListItem, ListItemAvatar, ListItemText, ListItemSecondaryAction, IconButton } from "@material-ui/core";
+import { Avatar, List, ListItem, ListItemAvatar, ListItemText, ListItemSecondaryAction, IconButton, withStyles } from "@material-ui/core";
 import { Game, Story } from "../../core/models";
 import DeleteIcon from '@material-ui/icons/Delete';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
 
 interface IOwnProps {
   game: Game;
+  classes: any;
   onItemSelected: (story: Story) => {};
   onItemRemove: (story: Story) => {};
 }
+
+const styles = (theme: any) => ({
+  storyList: {
+    overflow: 'auto',
+    height: '300px'
+  }
+});
 
 interface ITempState { }
 
@@ -39,8 +47,8 @@ class StoryListComponent extends React.Component<IProps, ITempState> {
             </Avatar>
           </ListItemAvatar>
           <ListItemText
-            primary={story.title}
-            secondary={story.description}
+            primary={story.id}
+            secondary={story.title}
           />
           <ListItemSecondaryAction>
             <IconButton aria-label="Delete" onClick={() => this.handleItemDeleted(story)}>
@@ -55,7 +63,7 @@ class StoryListComponent extends React.Component<IProps, ITempState> {
     return (
       <div>
         <h3>Stories</h3>
-        <List dense={true}>
+        <List className={this.props.classes.storyList} dense={true}>
           {stories}
         </List>
       </div>
@@ -63,4 +71,4 @@ class StoryListComponent extends React.Component<IProps, ITempState> {
   }
 }
 
-export default StoryListComponent as React.ComponentClass<any>;
+export default withStyles(styles)(StoryListComponent) as React.ComponentClass<any>;

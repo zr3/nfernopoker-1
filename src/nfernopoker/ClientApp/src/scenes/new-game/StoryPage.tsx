@@ -8,6 +8,7 @@ import { withRouter } from "react-router";
 import { Game, Story } from "../../core/models";
 import StoryForm from "./StoryForm";
 import StoryList from "./StoryList";
+import TfsStoryImport from "./TfsStoryImport";
 
 interface IOwnProps {
   firebase: any;
@@ -43,6 +44,7 @@ class StoryPageComponent extends React.Component<IProps, ITempState> {
 
   getInitialStoryState(): Story {
     return {
+      id: "",
       title: "",
       type: "",
       url: "n/a",
@@ -99,6 +101,7 @@ class StoryPageComponent extends React.Component<IProps, ITempState> {
 
     return (
       <Paper className={classes.container} >
+        <TfsStoryImport gameKey={this.getKey()}></TfsStoryImport>
         <StoryForm game={this.props.game} story={this.state.story}
           onFormChange={(name: string, value: string) => this.onStoryChange(name, value)}
           onAdd={() => this.addStory()}
