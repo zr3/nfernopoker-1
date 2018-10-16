@@ -8,7 +8,7 @@ import Layout from './core/components/Layout';
 import LoginScreen from './scenes/login/LoginScreen';
 import { GameScreen } from './components/GameScreen';
 import { GamesScreen } from './components/Games';
-import { TeamsScreen } from './components/TeamsScreen';
+import { TeamsScreen } from './scenes/teams/TeamsScreen';
 import HomePageComponent from './scenes/home/Home';
 import NewGame from './scenes/new-game/NewGame';
 import StoryPage from './scenes/new-game/StoryPage';

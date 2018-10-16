@@ -37,13 +37,13 @@ class AppHeaderComponent extends React.Component<any, any> {
     return (
       <AppBar position="absolute" className={classes.appBar}>
         <Toolbar>
-          <Typography className={classes.appTitle} variant="title" color="inherit" noWrap={true}>
+          <Typography className={classes.appTitle} variant="h6" color="inherit" noWrap={true}>
             {title}
           </Typography>
           {
             !isEmpty(this.props.auth) &&
             <div>
-              <Button variant="flat" onClick={this.logout}>Logout</Button>
+              <Button variant="text" onClick={this.logout}>Logout</Button>
               <IconButton
                 aria-owns='menu-appbar'
                 aria-haspopup="true"

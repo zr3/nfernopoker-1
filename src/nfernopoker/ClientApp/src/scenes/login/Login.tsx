@@ -92,7 +92,7 @@ class LoginComponent extends Component<IProps, ILoginState> {
           />
         </CardContent>
         <CardActions>
-          <Button type="submit" className={classes.button} onClick={this.login} variant="raised"
+          <Button type="submit" className={classes.button} onClick={this.login} variant="contained"
             style={{ marginLeft: '16px' }} title="Login" color="primary">Login</Button>
           <Button onClick={this.props.onSecondaryButton} size="small">
             {this.props.secondaryButtonText}
@@ -103,7 +103,7 @@ class LoginComponent extends Component<IProps, ILoginState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: redux.Dispatch<Types.Store>): any => ({
+const mapDispatchToProps = (dispatch: redux.Dispatch<redux.Action>): any => ({
   sendMessage: (message: string) => {
     dispatch({ type: MessageTypes.ToastMessage, payload: message });
   }

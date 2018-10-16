@@ -48,7 +48,7 @@ const mapStateToProps = (state: any, props: ISnackWrapperProps): IConnectedState
   open: state.snacks.open
 });
 
-const mapDispatchToProps = (dispatch: redux.Dispatch<Types.Store>): IConnectedDispatch => ({
+const mapDispatchToProps = (dispatch: redux.Dispatch<redux.Action>): IConnectedDispatch => ({
   clear: () => {
     dispatch({ type: MessageTypes.ToastClearMessage });
   }

@@ -58,7 +58,7 @@ class StoryPageComponent extends React.Component<IProps, ITempState> {
     return this.props.location.pathname.substring(7, 27);
   }
 
-  onStoryChange(name: string, value: string) {
+  onStoryChange(name: string, value: string): void {
     let newState = { ...this.state };
     newState.story[name] = value
     this.setState(newState);

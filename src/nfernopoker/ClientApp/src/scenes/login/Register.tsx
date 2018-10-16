@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as redux from "redux";
 import { Component, MouseEvent, ChangeEvent } from 'react';
-import { Button, TextField, CardContent, CardActions, Typography } from '@material-ui/core';
-import { RouteComponentProps, withRouter } from "react-router";
-import { connect } from "react-redux";
-import { MessageTypes } from "../../core/actions/SnackMessage";
 import { compose } from "redux";
+import { connect } from "react-redux";
 import { withFirebase } from "react-redux-firebase";
+import { RouteComponentProps, withRouter } from "react-router";
+import { Button, TextField, CardContent, CardActions, Typography } from '@material-ui/core';
+import { MessageTypes } from "../../core/actions/SnackMessage";
 
 interface ILocalProps {
   classes: any;
@@ -98,7 +98,7 @@ class RegisterComponent extends Component<IProps, ILocalState> {
           />
         </CardContent>
         <CardActions>
-          <Button className={this.props.classes.button} variant="raised" style={{ marginLeft: '16px' }} title="Register" color="primary" onClick={this.handleSubmit}>
+          <Button className={this.props.classes.button} variant="contained" style={{ marginLeft: '16px' }} title="Register" color="primary" onClick={this.handleSubmit}>
             Register
           </Button>
           <Button onClick={this.props.onSecondaryButton} size="small">
@@ -110,7 +110,7 @@ class RegisterComponent extends Component<IProps, ILocalState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: redux.Dispatch<Types.Store>): IConnectedDispatch => ({
+const mapDispatchToProps = (dispatch: redux.Dispatch<redux.Action>): IConnectedDispatch => ({
   sendMessage: (message: string) => {
     dispatch({ type: MessageTypes.ToastMessage, payload: message });
   }

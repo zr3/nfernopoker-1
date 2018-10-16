@@ -21,6 +21,9 @@ const theme = createMuiTheme({
   palette: {
     primary: orange,
   },
+  typography: {
+    useNextVariants: true,
+  },
 });
 
 const styles: any = (theme: any) => ({
