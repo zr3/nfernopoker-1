@@ -12,6 +12,7 @@ import { TeamsScreen } from './scenes/teams/TeamsScreen';
 import HomePageComponent from './scenes/home/Home';
 import NewGame from './scenes/new-game/NewGame';
 import StoryPage from './scenes/new-game/StoryPage';
+import ChatPage from './scenes/chat/ChatPage';
 import PageNotFound from './core/components/PageNotFound';
 
 const LoggedInRoutes = [
@@ -20,7 +21,8 @@ const LoggedInRoutes = [
   <Route key={2} exact path='/games' component={GamesScreen} />,
   <Route key={4} exact path='/games/new' component={NewGame} />,
   <Route key={3} exact path='/games/:key' component={GameScreen} />,
-  <Route key={5} exact path='/games/:key/stories' component={StoryPage} />
+  <Route key={5} exact path='/games/:key/stories' component={StoryPage} />,
+  <Route key={6} exact path='/games/:key/chat' component={ChatPage} />
 ];
 
 const LoggedOutRoutes = [

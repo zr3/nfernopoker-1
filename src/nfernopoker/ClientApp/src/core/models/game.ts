@@ -1,4 +1,4 @@
-import { Team, Story } from "./index"
+import { Chat, Team, Story } from "./index"
 
 export interface Game {
   title: string;
@@ -7,4 +7,5 @@ export interface Game {
   team: Team;
   cards: Array<String>;
   stories: Array<Story>;
+  chat: Chat;
 }

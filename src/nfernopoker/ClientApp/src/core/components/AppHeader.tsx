@@ -74,10 +74,8 @@ export default compose<React.ComponentClass<any>>(
       'profile'
     ]
   }),
-  connect(
-    (state: any) => ({
-      auth: state.firebase.auth,
-      profile: state.firebase.profile
-    })
-  )
+  connect((props: any) => ({
+    auth: props.firebase.auth,
+    profile: props.firebase.profile
+  }))
 )(AppHeaderComponent)
