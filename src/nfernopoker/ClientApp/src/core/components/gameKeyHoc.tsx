@@ -2,6 +2,7 @@ import * as React from 'react'
 
 interface ExternalProps {
   location: any;
+  match: any;
 }
 
 export interface IGameKeyHocProps {
@@ -30,7 +31,7 @@ export const gameKeyHoc = ({ debug = false }: Options = {}) =>
       constructor(props: ResultProps) {
         super(props);
         this.state = {
-          gameKey: this.props.location.pathname.substring(7, 27)
+          gameKey: this.props.match.params.key
         };
         if (debug) {
           console.log(this.state.gameKey);

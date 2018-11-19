@@ -22,7 +22,11 @@ const styles: any = (theme: any) => ({
     minWidth: "300px",
   },
   root: {
-    height: "100%"
+    height: "100%",
+    backgroundColor: theme.palette.background.default,
+    backgroundImage: "url(" + require('../../../public/img/hell.jpg') + ")",
+    backgroundSize: '100% 100%',
+    backgroundRepeat: 'no-repeat',
   }
 });
 
