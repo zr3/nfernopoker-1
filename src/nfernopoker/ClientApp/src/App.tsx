@@ -8,7 +8,8 @@ import Layout from './core/components/Layout';
 import LoginScreen from './scenes/login/LoginScreen';
 import { GameScreen } from './components/GameScreen';
 import { GamesScreen } from './components/Games';
-import { TeamsScreen } from './scenes/teams/TeamsScreen';
+import TeamsList from './scenes/teams/TeamsList';
+import TeamFormDialog from './scenes/teams/TeamFormDialog';
 import HomePageComponent from './scenes/home/Home';
 import NewGame from './scenes/new-game/NewGame';
 import StoryPage from './scenes/new-game/StoryPage';
@@ -17,7 +18,9 @@ import PageNotFound from './core/components/PageNotFound';
 
 const LoggedInRoutes = [
   <Route key={0} exact path='/' component={HomePageComponent} />,
-  <Route key={1} exact path='/teams' component={TeamsScreen} />,
+  <Route key={1} exact path='/teams' component={TeamsList} />,
+  <Route key={1} exact path='/teams/add' component={TeamFormDialog} />,
+  <Route key={1} exact path='/teams/edit/:key' component={TeamFormDialog} />,
   <Route key={2} exact path='/games' component={GamesScreen} />,
   <Route key={4} exact path='/games/new' component={NewGame} />,
   <Route key={3} exact path='/games/:key' component={GameScreen} />,
