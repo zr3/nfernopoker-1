@@ -5,7 +5,7 @@ export interface Game {
   description: string;
   owner: string;
   team: Team;
-  cards: Array<String>;
+  cards: { name: string, value: Array<string> };
   stories: Array<Story>;
   chat: Chat;
 }

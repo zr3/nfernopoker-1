@@ -52,6 +52,8 @@ const styles = (theme: Theme) => ({
     justifyContent: 'flex-end',
   },
   content: {
+    top: 56,
+    position: 'relative',
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
     transition: theme.transitions.create('margin', {
@@ -132,7 +134,6 @@ class Layout extends React.Component<IProps, ITempState> {
               [classes.contentShift]: open,
             })}
           >
-            <div className={classes.drawerHeader} />
             {this.props.children}
           </main>
         </div>

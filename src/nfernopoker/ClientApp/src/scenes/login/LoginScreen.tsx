@@ -24,7 +24,7 @@ const styles: any = (theme: any) => ({
   root: {
     height: "100%",
     backgroundColor: theme.palette.background.default,
-    backgroundImage: "url(" + require('../../../public/img/hell.jpg') + ")",
+    backgroundImage: "url(" + require('../../../public/img/inferno.jpg') + ")",
     backgroundSize: '100% 100%',
     backgroundRepeat: 'no-repeat',
   }

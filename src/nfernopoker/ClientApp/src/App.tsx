@@ -46,7 +46,7 @@ class App extends React.Component<any> {
           {[
             !loggedIn && LoggedOutRoutes,
             loggedIn && LoggedInRoutes,
-            <Route path='*' key={99} component={PageNotFound} />
+            loggedIn && <Route path='*' key={99} component={PageNotFound} />
           ]}
         </Switch>
       </Layout>

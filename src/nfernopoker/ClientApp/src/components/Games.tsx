@@ -64,7 +64,7 @@ class GamesScreenComponent extends React.Component<IProps, any> {
           <Card>
             <CardMedia component="img"
               style={styles.image}
-              src="https://tse3.mm.bing.net/th?id=OIP.iUJC2RFnRl_JWM7TuocoUgHaJl&pid=Api"
+              src="/public/img/planning_game.jpg"
             />
             <CardContent>
               <Typography gutterBottom={true}>
@@ -98,7 +98,7 @@ export const GamesScreen: React.ComponentClass<any> = compose<React.ComponentCla
   withStyles(styles),
   withRouter,
   firebaseConnect((props: IProps) => [
-    'games',
+    'games'
   ]),
   connect((state: any) => ({
     games: state.firebase.data.games,
