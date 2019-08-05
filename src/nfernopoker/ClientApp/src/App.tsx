@@ -7,7 +7,7 @@ import { withRouter } from "react-router";
 import Layout from './core/components/Layout';
 import LoginScreen from './scenes/login/LoginScreen';
 import { GameScreen } from './components/GameScreen';
-import { GamesScreen } from './components/Games';
+import GamesPageContainer  from './scenes/game/GamesPageContainer';
 import TeamsList from './scenes/teams/TeamsList';
 import TeamFormDialog from './scenes/teams/TeamFormDialog';
 import HomePageComponent from './scenes/home/Home';
@@ -21,7 +21,7 @@ const LoggedInRoutes = [
   <Route key={1} exact path='/teams' component={TeamsList} />,
   <Route key={1} exact path='/teams/add' component={TeamFormDialog} />,
   <Route key={1} exact path='/teams/edit/:key' component={TeamFormDialog} />,
-  <Route key={2} exact path='/games' component={GamesScreen} />,
+  <Route key={2} exact path='/games' component={GamesPageContainer} />,
   <Route key={4} exact path='/games/new' component={NewGame} />,
   <Route key={3} exact path='/games/:key' component={GameScreen} />,
   <Route key={5} exact path='/games/:key/stories' component={StoryPage} />,

@@ -168,7 +168,7 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
           }
         </section>
 
-        <section style={styles.playercontainer} >
+        <section style={styles.playerconlllllllltainer} >
           {players}
         </section>
 
