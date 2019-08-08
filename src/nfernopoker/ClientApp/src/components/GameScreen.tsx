@@ -33,14 +33,16 @@ const styles = {
     gridColumnGap: 10,
     gridRowGap: 10,
     width: '100%',
-    height: '70vh'
+    height: 'calc(100vh - 180px)'
   },
   storylistcontainer: {
     gridArea: 'storyList',
     alignSelf: 'stretch',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    overflowY: 'scroll',
+    height: 'calc(100vh - 180px)'
   },
   storycontainer: {
     gridArea: 'story',
@@ -71,6 +73,10 @@ const styles = {
     padding: '5px', /* Some padding */
     width: '100%',
     height: '100px'/* Set a small width */
+  },
+  storycard: {
+    minHeight: 150,
+    margin: 5
   }
 }
 
@@ -130,7 +136,7 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
     ));
 
     const storyList = game && game.stories.map((s, i) => (
-      <Card key={i} onClick={() => this.onStorySelected(s)}>
+      <Card style={styles.storycard} key={i} onClick={() => this.onStorySelected(s)}>
         <CardContent>
           <Typography gutterBottom={true} component="p">
             {s.id} - {s.title}
