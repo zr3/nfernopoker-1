@@ -119,6 +119,18 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
     //this.props.firebase.ref(`/games/${this.props.gameKey}`).update({ stories: stories });
   }
 
+  storyAverageScore(story: Story) {
+    let sumPoints: number = 0;
+    if (story.playerPoints) {
+      let filteredNumbers = story.playerPoints.filter(z => z.point != "?");
+      filteredNumbers.forEach(pp => {
+        sumPoints += parseInt(pp.point);
+      });
+      return sumPoints / filteredNumbers.length;
+    }
+    return sumPoints;
+  }
+
   render() {
 
     let { game } = this.props;
@@ -127,6 +139,11 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
     let { cards } = game || {
       cards: { name: "", value: [] }
     };
+
+    if (!game) {
+      return null;
+    }
+    let isGameOwner = (game.team.ownerEmail == this.props.profile.email);
 
     const cardList = cards && cards.value.map((p, i) => (
       <Card key={i} style={styles.card} onClick={() => this.onCardSelected(p)}>
@@ -197,9 +214,13 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
                 {cardList}
               </div>}
 
+              {isGameOwner && <h1> AVERAGE SCORE IS: {this.storyAverageScore(currentStory)}</h1>}
+
             </React.Fragment>
           }
         </section>
+
+
 
         <section style={styles.playercontainer} >
           {players}
