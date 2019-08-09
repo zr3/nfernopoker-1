@@ -12,10 +12,12 @@ interface IOwnProps {
   game: Game;
   history: any;
   classes: any;
+  profile: any;
 }
 
 interface ITempState {
-  currentStory: Story
+  currentStory: Story,
+  isInGame: boolean
 }
 
 type IProps = IOwnProps & IGameKeyHocProps;
@@ -86,17 +88,32 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
   constructor(props: any) {
     super(props)
     this.state = {
-      currentStory: null
+      currentStory: {} as any,
+      isInGame: false
     };
   }
 
   onCardSelected(cardValue: string): void {
     console.log(cardValue);
-    //this.props.firebase.ref(`/games/${this.props.gameKey}`).update({ stories: stories });
+    let currentStoryState = { ...this.state.currentStory };
+    if (!currentStoryState.playerPoints) {
+      currentStoryState.playerPoints = [];
+    }
+    currentStoryState.playerPoints = [...currentStoryState.playerPoints, { player: this.props.profile.email, point: cardValue }];
+
+    let storyUpdates = this.props.game.stories.map(s => s.id == currentStoryState.id ? currentStoryState : s);
+
+    this.props.firebase.ref(`/games/${this.props.gameKey}`).update({ stories: storyUpdates });
   }
 
   onStorySelected(story: Story): void {
-    this.setState({ currentStory: story });
+    this.setState({
+      currentStory: story,
+      isInGame: this.props.game.team.players.some(p => p.email == this.props.profile.email)
+    });
+
+
+    console.log(this.props.profile.email);
     //let story = this.props.game.stories.find(x => x == story)
     console.log(story);
     //this.props.firebase.ref(`/games/${this.props.gameKey}`).update({ stories: stories });
@@ -167,9 +184,10 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
               <div> {currentStory.storyPoints}</div>
               <a href={currentStory.url} target="_blank">{currentStory.url}</a>
 
-              <div style={styles.cardflexbox}>
+              {this.state.isInGame && <div style={styles.cardflexbox}>
                 {cardList}
-              </div>
+              </div>}
+
             </React.Fragment>
           }
         </section>
@@ -200,6 +218,3 @@ export const GameScreen: React.ComponentClass<any> = compose<React.ComponentClas
   )
 )(GameScreenComponent);
 
-//<section style={styles.cardcontainer}>
-//  {cardList}
-//</section>
