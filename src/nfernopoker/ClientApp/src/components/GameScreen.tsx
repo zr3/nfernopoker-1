@@ -138,19 +138,28 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
       </Card>
     ));
 
-    const players = game && game.team.players.map((p, i) => (
-      <Card key={i} style={styles.card}>
-        <CardMedia
-          style={styles.image}
-          image="/public/img/playing_card.png"
-        />
-        <CardContent>
-          <Typography gutterBottom={true} component="p">
-            {p.name}
-          </Typography>
-        </CardContent>
-      </Card>
-    ));
+    const players = game && game.team.players.map((p, i) => {
+      let playerPoint = { player: "", point: "" };
+      if (this.state.currentStory.playerPoints) {
+        playerPoint = this.state.currentStory.playerPoints.find(pp => pp.player == p.email);
+      }
+
+      return (
+        <Card key={i} style={styles.card} >
+          {playerPoint && <span>{playerPoint.point}</span>}
+          <CardMedia
+            style={styles.image}
+            image="/public/img/playing_card.png"
+          />
+          <CardContent>
+            <Typography gutterBottom={true} component="p">
+              {p.name}
+            </Typography>
+          </CardContent>
+        </Card >
+      )
+
+    });
 
     const storyList = game && game.stories.map((s, i) => (
       <Card style={styles.storycard} key={i} onClick={() => this.onStorySelected(s)}>
@@ -163,7 +172,7 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
     ));
 
     return (
-      <div style={styles.layout}>
+      <div style={styles.layout} >
 
         <section style={styles.storylistcontainer}>
           {storyList}
