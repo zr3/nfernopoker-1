@@ -234,3 +234,6 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 /src/nfernopoker/jira_privatekey.pem
+
+# vscode
+.vscode
