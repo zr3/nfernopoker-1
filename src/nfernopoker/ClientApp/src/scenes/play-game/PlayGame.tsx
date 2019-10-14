@@ -3,9 +3,9 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Card, CardMedia, CardContent, Typography, withStyles } from "@material-ui/core";
-import { gameKeyHoc, IGameKeyHocProps } from "../core/components/gameKeyHoc";
+import { gameKeyHoc, IGameKeyHocProps } from "../../core/components/gameKeyHoc";
 import { firebaseConnect } from "react-redux-firebase";
-import { Game, Story } from "../core/models";
+import { Game, Story } from "../../core/models";
 
 interface IOwnProps {
   firebase: any;
@@ -83,7 +83,7 @@ const styles = {
 }
 
 
-class GameScreenComponent extends React.Component<IProps, ITempState> {
+class PlayGameComponent extends React.Component<IProps, ITempState> {
 
   constructor(props: any) {
     super(props)
@@ -111,12 +111,6 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
       currentStory: story,
       isInGame: this.props.game.team.players.some(p => p.email == this.props.profile.email)
     });
-
-
-    console.log(this.props.profile.email);
-    //let story = this.props.game.stories.find(x => x == story)
-    console.log(story);
-    //this.props.firebase.ref(`/games/${this.props.gameKey}`).update({ stories: stories });
   }
 
   storyAverageScore(story: Story) {
@@ -189,7 +183,7 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
     ));
 
     return (
-      <div style={styles.layout} >
+      <div style={styles.layout}>
 
         <section style={styles.storylistcontainer}>
           {storyList}
@@ -234,7 +228,7 @@ class GameScreenComponent extends React.Component<IProps, ITempState> {
 
 const currentGame: string = 'currentGame';
 
-export const GameScreen: React.ComponentClass<any> = compose<React.ComponentClass<any>>(
+export const PlayGame: React.ComponentClass<any> = compose<React.ComponentClass<any>>(
   gameKeyHoc({ debug: true }),
   withStyles(styles),
   withRouter,
@@ -246,5 +240,5 @@ export const GameScreen: React.ComponentClass<any> = compose<React.ComponentClas
     profile: state.firebase.profile
   })
   )
-)(GameScreenComponent);
+)(PlayGameComponent);
 

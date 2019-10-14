@@ -21,7 +21,7 @@ class GamesPageContainer extends React.Component<IProps, any> {
   }
 
   playGame(key: string) {
-    this.props.history.push(`/games/${key}`);
+    this.props.history.push(`/play/${key}`);
   }
 
   removeItem(key: string) {

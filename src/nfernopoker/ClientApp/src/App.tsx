@@ -6,7 +6,7 @@ import { compose } from 'redux';
 import { withRouter } from "react-router";
 import Layout from './core/components/Layout';
 import LoginScreen from './scenes/login/LoginScreen';
-import { GameScreen } from './components/GameScreen';
+import { PlayGame } from './scenes/play-game/PlayGame';
 import GamesPageContainer  from './scenes/game/GamesPageContainer';
 import TeamsList from './scenes/teams/TeamsList';
 import TeamFormDialog from './scenes/teams/TeamFormDialog';
@@ -23,7 +23,7 @@ const LoggedInRoutes = [
   <Route key={1} exact path='/teams/edit/:key' component={TeamFormDialog} />,
   <Route key={2} exact path='/games' component={GamesPageContainer} />,
   <Route key={4} exact path='/games/new' component={NewGame} />,
-  <Route key={3} exact path='/games/:key' component={GameScreen} />,
+  <Route key={3} exact path='/play/:key' component={PlayGame} />,
   <Route key={5} exact path='/games/:key/stories' component={StoryPage} />,
   <Route key={6} exact path='/games/:key/chat' component={ChatPage} />
 ];

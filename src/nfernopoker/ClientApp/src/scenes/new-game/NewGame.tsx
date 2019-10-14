@@ -88,7 +88,7 @@ class NewGameComponent extends React.Component<any, any> {
         {this.props.teams[key].name}
       </option>)
     });
-    menuItems.unshift(<option key="666">-- SELECT TEAM --</option>)
+    menuItems.unshift(<option key="-1">-- SELECT TEAM --</option>)
     return menuItems;
   }
 
