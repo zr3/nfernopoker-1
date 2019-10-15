@@ -20,10 +20,6 @@ class GamesPageContainer extends React.Component<IProps, any> {
     super(props);
   }
 
-  playGame(key: string) {
-    this.props.history.push(`/play/${key}`);
-  }
-
   removeItem(key: string) {
     this.props.firebase.remove(`/games/${key}`);
   }
@@ -31,7 +27,6 @@ class GamesPageContainer extends React.Component<IProps, any> {
   render() {
     return (
       <GamesPage
-        onPlayGame={(k: string) => this.playGame(k)}
         onRemoveItem={(k: string) => this.removeItem(k)}
         {...this.props} />
     )

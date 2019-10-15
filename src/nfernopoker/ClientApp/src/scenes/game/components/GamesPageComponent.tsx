@@ -9,8 +9,7 @@ interface IOwnProps {
   games: Array<any>,
   history: any,
   classes: any,
-  onRemoveItem(key: string): void,
-  onPlayGame(key: string): void
+  onRemoveItem(key: string): void
 }
 
 type IProps = IOwnProps;
@@ -54,20 +53,29 @@ const GamesPage: React.StatelessComponent<IProps> = (props) => {
             <Typography gutterBottom={true}>
               {game.title}
             </Typography>
-            <Button color="secondary" onClick={() => props.onRemoveItem(key)}>
+            <Button color="secondary" onClick={() => props.onRemoveItem(key)} variant="text" size="small">
               Delete
               </Button>
-            <Button color="primary" onClick={() => props.onPlayGame(key)}>
-              Play
-              </Button>
 
-            <Link to={`games/${key}/stories`}> STORIES </Link>
+            <Link to={`play/${key}/`}>
+              <Button color="primary" size="small">
+                Play
+              </Button>
+            </Link>
+
+            <Link to={`games/${key}/stories`}>
+              <Button size="small">
+                Stories
+              </Button>
+            </Link>
+
 
           </CardContent>
         </Card>
       </Grid>)
     });
   }
+
   return (<Grid container
     direction="row"
     justify="flex-start"
@@ -75,6 +83,7 @@ const GamesPage: React.StatelessComponent<IProps> = (props) => {
     className={classes.root} spacing={24}>
     {cards}
   </Grid>)
+
 }
 
 export default withStyles(styles)(GamesPage)
