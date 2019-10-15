@@ -6,6 +6,7 @@ import { Card, CardMedia, CardContent, Typography, withStyles } from "@material-
 import { gameKeyHoc, IGameKeyHocProps } from "../../core/components/gameKeyHoc";
 import { firebaseConnect } from "react-redux-firebase";
 import { Game, Story } from "../../core/models";
+import GameStoryCard from "./GameStoryCard";
 
 interface IOwnProps {
   firebase: any;
@@ -27,28 +28,30 @@ const styles = {
   layout: {
     display: 'grid',
     grid: `
-            "cards    cards        cards"
+            "cards       cards    cards"
             "storyList   story    story"
-            "players   players   players"
+            "storyList   players  players"
             / 1fr 1fr 1fr
         `,
     gridColumnGap: 10,
     gridRowGap: 10,
     width: '100%',
-    height: 'calc(100vh - 180px)'
+    height: 'calc(100vh - 200px)'
   },
   storylistcontainer: {
     gridArea: 'storyList',
     alignSelf: 'stretch',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-start'
+  },
+  storylist: {
     overflowY: 'scroll',
-    height: 'calc(100vh - 180px)'
+    height: 'calc(100vh - 135px)'
   },
   storycontainer: {
     gridArea: 'story',
-    minHeight: 300
+    minHeight: 'calc(100vh - 250px)'
   },
   playercontainer: {
     gridArea: 'players',
@@ -66,6 +69,7 @@ const styles = {
     justifyContent: 'space-around'
   },
   card: {
+    maxHeight: 120,
     maxWidth: 80,
     margin: '8px'
   },
@@ -74,13 +78,9 @@ const styles = {
     borderRadius: '4px',  /* Rounded border */
     padding: '5px', /* Some padding */
     width: '100%',
-    height: '100px'/* Set a small width */
-  },
-  storycard: {
-    minHeight: 150,
-    margin: 5
+    height: '90px'/* Set a small width */
   }
-}
+} as any;
 
 
 class PlayGameComponent extends React.Component<IProps, ITempState> {
@@ -137,6 +137,7 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
     if (!game) {
       return null;
     }
+
     let isGameOwner = (game.team.ownerEmail == this.props.profile.email);
 
     const cardList = cards && cards.value.map((p, i) => (
@@ -151,7 +152,7 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
 
     const players = game && game.team.players.map((p, i) => {
       let playerPoint = { player: "", point: "" };
-      if (this.state.currentStory.playerPoints) {
+      if (currentStory.playerPoints) {
         playerPoint = this.state.currentStory.playerPoints.find(pp => pp.player == p.email);
       }
 
@@ -172,21 +173,18 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
 
     });
 
-    const storyList = game && game.stories.map((s, i) => (
-      <Card style={styles.storycard} key={i} onClick={() => this.onStorySelected(s)}>
-        <CardContent>
-          <Typography gutterBottom={true} component="p">
-            {s.id} - {s.title}
-          </Typography>
-        </CardContent>
-      </Card>
+    const storyList = game && game.stories.map((s: Story, i) => (
+      <GameStoryCard currentStoryId={currentStory.id} story={s} key={i} onStorySelected={(s: Story) => this.onStorySelected(s)} />
     ));
 
     return (
       <div style={styles.layout}>
 
         <section style={styles.storylistcontainer}>
-          {storyList}
+          <Typography variant="h4"> User Stories </Typography>
+          <div style={styles.storylist}>
+            {storyList}
+          </div>
         </section>
 
         <section style={styles.storycontainer}>

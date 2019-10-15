@@ -69,7 +69,7 @@ class TeamFormInputs extends React.Component<IProps, any> {
     let addDisabled = this.state.player.name == "" || this.state.player.email == "";
 
     return (
-      <Grid container spacing={24}>
+      <Grid container spacing={2}>
 
         <TextField
           id="name"

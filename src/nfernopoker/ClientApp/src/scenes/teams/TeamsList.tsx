@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { firebaseConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import {
-  Avatar, Button, List, ListItem, ListItemAvatar, ListItemText,
-  ListItemSecondaryAction, IconButton, CircularProgress, Theme, withStyles
+  Avatar, List, ListItem, ListItemAvatar, ListItemText,
+  ListItemSecondaryAction, IconButton, CircularProgress, Theme, withStyles, Fab
 } from '@material-ui/core';
 import { Add, Edit, Delete, Group } from '@material-ui/icons';
 import DialogConfirmation from '../../core/components/DialogConfirmation';
@@ -30,7 +30,7 @@ type IProps = IOwnProps;
 const styles = (theme: Theme) => ({
   fab: {
     position: 'absolute',
-    right: theme.spacing.unit * 2,
+    right: theme.spacing(2)
   },
   loadIcon: {
     left: '50%',
@@ -83,7 +83,7 @@ class TeamsList extends React.Component<IProps, ITempState> {
             </ListItemAvatar>
             <ListItemText
               primary={team.name}
-              secondary={playerCount + ' team members'} 
+              secondary={playerCount + ' team members'}
             />
             <ListItemSecondaryAction>
               <Link to={'/teams/edit/' + key}>
@@ -103,10 +103,11 @@ class TeamsList extends React.Component<IProps, ITempState> {
     return (
       <div>
         <Link to={'/teams/add'}>
-          <Button className={classes.fab} variant="fab" color="primary" aria-label="Add New Track">
+          <Fab className={classes.fab} color="primary" aria-label="Add New Team">
             <Add />
-          </Button>
+          </Fab>
         </Link>
+
         <List className="teams-list">
           {teams}
         </List>
