@@ -53,7 +53,7 @@ const GamesPage: React.StatelessComponent<IProps> = (props) => {
             <Typography gutterBottom={true}>
               {game.title}
             </Typography>
-            <Button color="secondary" onClick={() => props.onRemoveItem(key)} variant="text" size="small">
+            <Button color="secondary" onClick={() => props.onRemoveItem(key)} size="small">
               Delete
               </Button>
 
