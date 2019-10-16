@@ -17,7 +17,7 @@ interface IOwnProps {
 }
 
 interface ITempState {
-  currentStory: Story,
+  currentStory?: Story,
   isInGame: boolean
 }
 
@@ -152,8 +152,8 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
 
     const players = game && game.team.players.map((p, i) => {
       let playerPoint = { player: "", point: "" };
-      if (currentStory.playerPoints) {
-        playerPoint = this.state.currentStory.playerPoints.find(pp => pp.player == p.email);
+      if (currentStory && currentStory.playerPoints) {
+        playerPoint = currentStory.playerPoints.find(pp => pp.player == p.email);
       }
 
       return (
@@ -188,19 +188,27 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
         </section>
 
         <section style={styles.storycontainer}>
-          {!currentStory &&
-            <h1>Select a story </h1>
+          {currentStory && !currentStory.id &&
+            <Typography variant="h1" align="center">Select a story </Typography>
           }
-          {currentStory &&
+          {currentStory && currentStory.id &&
             <React.Fragment>
-              <h3> Story </h3>
-              <h4>{currentStory.id} {currentStory.title}</h4>
-              <div>DESCRIPTION</div>
-              <div> {currentStory.description}</div>
-              <div>ACCEPTANCE CRITERIA</div>
-              <div> {currentStory.acceptanceCriteria}</div>
+              <Typography variant="h6" gutterBottom={true} align="left">
+                {currentStory.url != "n/a" && <a href={currentStory.url} target="_blank">
+                  {currentStory.title}
+                </a>}
+                {currentStory.url == "n/a" && <span>{currentStory.title}</span>}
+              </Typography>
+
+              <hr />
+              <Typography variant="subtitle2" align="left">DESCRIPTION</Typography>
+              <Typography variant="body1" gutterBottom={true} align="left">{currentStory.description}</Typography>
+
+              <Typography variant="subtitle2" align="left">ACCEPTANCE CRITERIA</Typography>
+              <pre dangerouslySetInnerHTML={{ __html: currentStory.acceptanceCriteria }}>
+              </pre>
+
               <div> {currentStory.storyPoints}</div>
-              <a href={currentStory.url} target="_blank">{currentStory.url}</a>
 
               {this.state.isInGame && <div style={styles.cardflexbox}>
                 {cardList}
@@ -213,10 +221,11 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
         </section>
 
 
-
-        <section style={styles.playercontainer} >
-          {players}
-        </section>
+        {currentStory && currentStory.id &&
+          <section style={styles.playercontainer} >
+            {players}
+          </section>
+        }
 
       </div>
     )

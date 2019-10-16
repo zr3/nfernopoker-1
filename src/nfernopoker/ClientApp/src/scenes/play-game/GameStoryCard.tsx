@@ -5,7 +5,7 @@ import { Story } from "../../core/models";
 
 interface IOwnProps {
   story: Story,
-  currentStoryId: string,
+  currentStoryId?: string,
   key: number,
   onStorySelected(story: Story): void
 }
