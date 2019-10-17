@@ -2,13 +2,14 @@ import * as React from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { Card, CardContent, Typography, withStyles } from "@material-ui/core";
+import { Typography, withStyles } from "@material-ui/core";
 import { gameKeyHoc, IGameKeyHocProps } from "../../core/components/gameKeyHoc";
 import { firebaseConnect } from "react-redux-firebase";
 import { Game, Story } from "../../core/models";
 import GameStoryCard from "./GameStoryCard";
 import GamePlayerCard from "./GamePlayerCard";
 import StoryPointCard from "./StoryPointCard";
+import GameStoryBoard from "./GameStoryBoard";
 
 interface IOwnProps {
   firebase: any;
@@ -30,8 +31,9 @@ const styles = {
   layout: {
     display: 'grid',
     grid: `
-            "cards       cards    cards"
             "storyList   story    story"
+            "storyList   story    story"
+            "storyList   cards    cards"
             "storyList   players  players"
             / 1fr 1fr 1fr
         `,
@@ -48,12 +50,14 @@ const styles = {
     justifyContent: 'flex-start'
   },
   storylist: {
-    overflowY: 'scroll',
+    overflowY: 'auto',
     height: 'calc(100vh - 135px)'
   },
   storycontainer: {
     gridArea: 'story',
-    minHeight: 'calc(100vh - 250px)'
+    minHeight: 400,
+    overflowY: 'auto',
+    height: 'calc(100vh - 340px)'
   },
   playercontainer: {
     gridArea: 'players',
@@ -83,7 +87,21 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
     };
   }
 
-  onCardSelected(cardValue: string): void {
+  onPointsAssigned(clearPoints?: boolean) {
+
+    let currentStoryState: Story = { ...this.state.currentStory } as Story;
+
+    let storyPoints = this.storyAverageScore(this.state.currentStory as Story).toString();
+    currentStoryState.storyPoints = clearPoints ? "" : storyPoints;
+
+    let storyUpdates = this.props.game.stories.map(s => s.id == currentStoryState.id ? currentStoryState : s);
+    let newGameState = { ...this.props.game };
+    newGameState.stories = storyUpdates;
+
+    this.props.firebase.ref(`/games/${this.props.gameKey}`).update(newGameState);
+  }
+
+  onPointCardSelected(cardValue: string): void {
 
     let currentStoryState: Story = { ...this.state.currentStory } as Story;
 
@@ -136,7 +154,7 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
   render() {
 
     let { game } = this.props;
-    let { currentStory } = this.state;
+    let { currentStory, isInGame } = this.state;
     let currentStoryId = currentStory && currentStory.id;
 
     let { cards } = game || {
@@ -149,9 +167,10 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
 
     let isGameOwner = (game.team.ownerEmail == this.props.profile.email);
     let activePlayerCardPoint = this.getPlayerPoint(currentStory as Story, this.props.profile.email);
+    let averageScore = this.storyAverageScore(currentStory as Story);
 
     const cardList = cards && cards.value.map((w, i) => (
-      <StoryPointCard key={i} cardValue={w} userSelectedCard={activePlayerCardPoint.point} onCardSelected={(s: string) => this.onCardSelected(s)} />
+      <StoryPointCard key={i} cardValue={w} userSelectedCard={activePlayerCardPoint.point} onCardSelected={(s: string) => this.onPointCardSelected(s)} />
     ));
 
     const players = game && game.team.players.map((p, i) =>
@@ -164,7 +183,6 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
 
     return (
       <div style={styles.layout}>
-
         <section style={styles.storylistcontainer}>
           <Typography variant="h4"> User Stories </Typography>
           <div style={styles.storylist}>
@@ -173,45 +191,20 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
         </section>
 
         <section style={styles.storycontainer}>
-          {currentStory && !currentStory.id &&
-            <Typography variant="h1" align="center">Select a story </Typography>
-          }
-          {currentStory && currentStory.id &&
-            <React.Fragment>
-              <Typography variant="h6" gutterBottom={true} align="left">
-                {currentStory.url != "n/a" && <a href={currentStory.url} target="_blank">
-                  {currentStory.title}
-                </a>}
-                {currentStory.url == "n/a" && <span>{currentStory.title}</span>}
-              </Typography>
-
-              <hr />
-              <Typography variant="subtitle2" align="left">DESCRIPTION</Typography>
-              <Typography variant="body1" gutterBottom={true} align="left">{currentStory.description}</Typography>
-
-              <Typography variant="subtitle2" align="left">ACCEPTANCE CRITERIA</Typography>
-              <pre dangerouslySetInnerHTML={{ __html: currentStory.acceptanceCriteria }}>
-              </pre>
-
-              <div> {currentStory.storyPoints}</div>
-
-              {this.state.isInGame && <div style={styles.cardflexbox}>
-                {cardList}
-              </div>}
-
-              {isGameOwner && <h1> AVERAGE SCORE IS: {this.storyAverageScore(currentStory)}</h1>}
-
-            </React.Fragment>
-          }
+          <GameStoryBoard currentStory={currentStory} isGameOwner={isGameOwner} averageScore={averageScore} assignStoryPoints={(c?: boolean) => this.onPointsAssigned(c)} />
         </section>
 
-
-        {currentStory && currentStory.id &&
-          <section style={styles.playercontainer} >
-            {players}
+        {currentStory && isInGame && !currentStory.storyPoints &&
+          <section style={styles.cardflexbox}>
+            {cardList}
           </section>
         }
 
+        {currentStory && currentStory.id &&
+          <section style={styles.playercontainer}>
+            {players}
+          </section>
+        }
       </div>
     )
 

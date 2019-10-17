@@ -16,13 +16,13 @@ const styles = {
     position: 'relative',
     height: '2.5cm',
     width: '1.5cm',
-    margin: '.5em'
+    marginLeft: '.25em'
   },
   currentcard: {
     position: 'relative',
     height: '2.5cm',
     width: '1.5cm',
-    margin: '.5em',
+    marginLeft: '.25em',
     borderWidth: 1,
     borderColor: 'red',
     borderStyle: 'solid'

@@ -17,7 +17,7 @@ const styles = {
     position: 'relative',
     height: '3.5cm',
     width: '2.5cm',
-    margin: '.5em'
+    marginLeft: '.5em'
   },
   image: {
     border: '1px solid #ddd', /* Gray border */
