@@ -13,13 +13,13 @@ const styles: any = (theme: any) => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    margin: theme.spacing.unit
+    margin: theme.spacing(1)
   },
   textField: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
     width: '100px'
   },
   iconSmall: {

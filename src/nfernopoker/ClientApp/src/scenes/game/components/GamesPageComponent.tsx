@@ -18,15 +18,11 @@ const styles = {
   root: {
     flexGrow: 1,
   },
-  button: {
-    background: 'white',
-    width: '100px'
-  },
   card: {
     width: 245
   },
   image: {
-    height: 180,
+    height: 120,
   }
 }
 
@@ -50,13 +46,16 @@ const GamesPage: React.StatelessComponent<IProps> = (props) => {
             src="/public/img/planning_game.jpg"
           />
           <CardContent>
-            <Typography gutterBottom={true}>
+
+            <Typography align="center" variant="h6">
               {game.title}
             </Typography>
-            <Button color="secondary" onClick={() => props.onRemoveItem(key)} size="small">
-              Delete
-              </Button>
 
+            <Typography align="left" paragraph={true} variant="subtitle1">
+              {game.description}
+            </Typography>
+
+       
             <Link to={`play/${key}/`}>
               <Button color="primary" size="small">
                 Play
@@ -69,6 +68,13 @@ const GamesPage: React.StatelessComponent<IProps> = (props) => {
               </Button>
             </Link>
 
+            <Button color="secondary" onClick={() => props.onRemoveItem(key)} size="small">
+              Delete
+            </Button>
+
+            <Typography align="left" paragraph={true} variant="caption">
+              {game.team.name}
+            </Typography>
 
           </CardContent>
         </Card>
@@ -80,7 +86,7 @@ const GamesPage: React.StatelessComponent<IProps> = (props) => {
     direction="row"
     justify="flex-start"
     alignItems="flex-start"
-    className={classes.root} spacing={24}>
+    className={classes.root} spacing={2}>
     {cards}
   </Grid>)
 

@@ -13,10 +13,10 @@ interface ILoginScreenProps {
 }
 
 const styles: any = (theme: any) => ({
-  button: { margin: theme.spacing.unit },
+  button: { margin: theme.spacing(1) },
   close: {
-    width: theme.spacing.unit * 4,
-    height: theme.spacing.unit * 4,
+    width: theme.spacing(4),
+    height: theme.spacing(4)
   },
   login: {
     minWidth: "300px",

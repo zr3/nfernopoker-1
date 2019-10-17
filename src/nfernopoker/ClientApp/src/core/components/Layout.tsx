@@ -25,10 +25,7 @@ type IProps = IOwnProps;
 const theme = createMuiTheme({
   palette: {
     primary: orange,
-  },
-  typography: {
-    useNextVariants: true,
-  },
+  }
 });
 
 const drawerWidth = 240;
@@ -55,7 +52,7 @@ const styles = (theme: Theme) => ({
     top: 56,
     position: 'relative',
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -74,11 +71,11 @@ const styles = (theme: Theme) => ({
 class Layout extends React.Component<IProps, ITempState> {
 
   constructor(
-    public props: IOwnProps
+    props: IOwnProps
   ) {
     super(props)
     this.state = {
-      open: false,
+      open: false
     };
   }
 

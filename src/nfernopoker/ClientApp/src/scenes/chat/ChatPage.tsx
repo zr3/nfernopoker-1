@@ -27,7 +27,7 @@ const styles: any = (theme: any) => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    margin: theme.spacing.unit
+    margin: theme.spacing(1)
   }
 });
 

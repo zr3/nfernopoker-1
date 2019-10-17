@@ -19,10 +19,10 @@ type IProps = IOwnProps;
 
 const styles: any = (theme: any) => ({
   textField: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
     width: '100px'
   },
   paper: {
