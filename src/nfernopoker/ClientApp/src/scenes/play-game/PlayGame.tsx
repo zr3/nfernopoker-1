@@ -2,11 +2,12 @@ import * as React from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { Card, CardMedia, CardContent, Typography, withStyles } from "@material-ui/core";
+import { Card, CardContent, Typography, withStyles } from "@material-ui/core";
 import { gameKeyHoc, IGameKeyHocProps } from "../../core/components/gameKeyHoc";
 import { firebaseConnect } from "react-redux-firebase";
 import { Game, Story } from "../../core/models";
 import GameStoryCard from "./GameStoryCard";
+import GamePlayerCard from "./GamePlayerCard";
 
 interface IOwnProps {
   firebase: any;
@@ -67,18 +68,6 @@ const styles = {
     display: 'flex',
     alignSelf: 'stretch',
     justifyContent: 'space-around'
-  },
-  card: {
-    maxHeight: 120,
-    maxWidth: 80,
-    margin: '8px'
-  },
-  image: {
-    border: '1px solid #ddd', /* Gray border */
-    borderRadius: '4px',  /* Rounded border */
-    padding: '5px', /* Some padding */
-    width: '100%',
-    height: '90px'/* Set a small width */
   }
 } as any;
 
@@ -150,28 +139,9 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
       </Card>
     ));
 
-    const players = game && game.team.players.map((p, i) => {
-      let playerPoint = { player: "", point: "" };
-      if (currentStory && currentStory.playerPoints) {
-        playerPoint = currentStory.playerPoints.find(pp => pp.player == p.email);
-      }
-
-      return (
-        <Card key={i} style={styles.card} >
-          {playerPoint && <span>{playerPoint.point}</span>}
-          <CardMedia
-            style={styles.image}
-            image="/public/img/playing_card.png"
-          />
-          <CardContent>
-            <Typography gutterBottom={true} component="p">
-              {p.name}
-            </Typography>
-          </CardContent>
-        </Card >
-      )
-
-    });
+    const players = game && game.team.players.map((p, i) => 
+      <GamePlayerCard currentStory={currentStory} key={i} player={p} />
+    );
 
     const storyList = game && game.stories.map((s: Story, i) => (
       <GameStoryCard currentStoryId={currentStory.id} story={s} key={i} onStorySelected={(s: Story) => this.onStorySelected(s)} />

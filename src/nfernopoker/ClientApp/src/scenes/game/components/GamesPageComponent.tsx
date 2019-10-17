@@ -18,10 +18,6 @@ const styles = {
   root: {
     flexGrow: 1,
   },
-  button: {
-    background: 'white',
-    width: '100px'
-  },
   card: {
     width: 245
   },
@@ -59,6 +55,7 @@ const GamesPage: React.StatelessComponent<IProps> = (props) => {
               {game.description}
             </Typography>
 
+       
             <Link to={`play/${key}/`}>
               <Button color="primary" size="small">
                 Play
@@ -74,6 +71,10 @@ const GamesPage: React.StatelessComponent<IProps> = (props) => {
             <Button color="secondary" onClick={() => props.onRemoveItem(key)} size="small">
               Delete
             </Button>
+
+            <Typography align="left" paragraph={true} variant="caption">
+              {game.team.name}
+            </Typography>
 
           </CardContent>
         </Card>
