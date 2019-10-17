@@ -8,6 +8,7 @@ import { firebaseConnect } from "react-redux-firebase";
 import { Game, Story } from "../../core/models";
 import GameStoryCard from "./GameStoryCard";
 import GamePlayerCard from "./GamePlayerCard";
+import StoryPointCard from "./StoryPointCard";
 
 interface IOwnProps {
   firebase: any;
@@ -83,12 +84,21 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
   }
 
   onCardSelected(cardValue: string): void {
-    console.log(cardValue);
-    let currentStoryState = { ...this.state.currentStory };
+
+    let currentStoryState: Story = { ...this.state.currentStory } as Story;
+
     if (!currentStoryState.playerPoints) {
       currentStoryState.playerPoints = [];
     }
-    currentStoryState.playerPoints = [...currentStoryState.playerPoints, { player: this.props.profile.email, point: cardValue }];
+    // Check if user has already pointed game
+    let pointsIndex = currentStoryState.playerPoints.filter(x => x != undefined).findIndex(x => x.player == this.props.profile.email);
+    if (pointsIndex > -1) {   // Just modify users existing score
+      let newState = [...currentStoryState.playerPoints.filter(x => x != undefined)]
+      newState[pointsIndex].point = cardValue;
+      currentStoryState.playerPoints = newState;
+    } else { // Add item to existing array
+      currentStoryState.playerPoints = [...currentStoryState.playerPoints, { player: this.props.profile.email, point: cardValue }];
+    }
 
     let storyUpdates = this.props.game.stories.map(s => s.id == currentStoryState.id ? currentStoryState : s);
 
@@ -114,10 +124,20 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
     return sumPoints;
   }
 
+  getPlayerPoint(currentStory: Story, userEmail: string): { player: string, point: string } {
+    let playerPoint: { player: string, point: string } = { player: "", point: "" };
+    if (currentStory && currentStory.playerPoints) {
+      let points = currentStory.playerPoints.filter(x => x != undefined).find(pp => pp.player == userEmail);
+      playerPoint = points ? points : { player: "", point: "" };
+    }
+    return playerPoint;
+  }
+
   render() {
 
     let { game } = this.props;
     let { currentStory } = this.state;
+    let currentStoryId = currentStory && currentStory.id;
 
     let { cards } = game || {
       cards: { name: "", value: [] }
@@ -128,23 +148,18 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
     }
 
     let isGameOwner = (game.team.ownerEmail == this.props.profile.email);
+    let activePlayerCardPoint = this.getPlayerPoint(currentStory as Story, this.props.profile.email);
 
-    const cardList = cards && cards.value.map((p, i) => (
-      <Card key={i} style={styles.card} onClick={() => this.onCardSelected(p)}>
-        <CardContent>
-          <Typography gutterBottom={true} component="p">
-            {p}
-          </Typography>
-        </CardContent>
-      </Card>
+    const cardList = cards && cards.value.map((w, i) => (
+      <StoryPointCard key={i} cardValue={w} userSelectedCard={activePlayerCardPoint.point} onCardSelected={(s: string) => this.onCardSelected(s)} />
     ));
 
-    const players = game && game.team.players.map((p, i) => 
-      <GamePlayerCard currentStory={currentStory} key={i} player={p} />
+    const players = game && game.team.players.map((p, i) =>
+      <GamePlayerCard currentStory={currentStory} key={i} player={p} playerPointFunc={this.getPlayerPoint} />
     );
 
     const storyList = game && game.stories.map((s: Story, i) => (
-      <GameStoryCard currentStoryId={currentStory.id} story={s} key={i} onStorySelected={(s: Story) => this.onStorySelected(s)} />
+      <GameStoryCard currentStoryId={currentStoryId} story={s} key={i} onStorySelected={(s: Story) => this.onStorySelected(s)} />
     ));
 
     return (
