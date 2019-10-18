@@ -1,7 +1,8 @@
 import { routerMiddleware, routerReducer } from 'react-router-redux';
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { reactReduxFirebase, firebaseReducer, getFirebase } from 'react-redux-firebase';
+import { firebaseReducer, getFirebase } from 'react-redux-firebase';
+import { } from 'react-redux-firebase'
 import * as firebase from "firebase";
 import * as SnackMessage from "../actions/SnackMessage";
 
@@ -17,21 +18,8 @@ export default function configureStore(history: any, initialState: any) {
     storageBucket: ""
   };
 
-  // react-redux-firebase options
-  const config = {
-    userProfile: 'users', // firebase root where user profiles are stored
-    presence: 'presence', // where list of online users is stored in database
-    sessions: 'sessions', // where list of user sessions is stored in database (presence must be enabled)
-    attachAuthIsReady: true, // attaches auth is ready promise to store
-    enableLogging: true, // enable/disable Firebase's database logging
-  }
-
-  firebase.initializeApp(firebaseConfig);
-
-  // Add redux Firebase to compose
-  const createStoreWithFirebase = compose(
-    reactReduxFirebase(firebase, config)
-  )(createStore)
+  // Initialize firebase instance
+  firebase.initializeApp(firebaseConfig)
 
   const reducers = {
     snacks: SnackMessage.reducer
@@ -56,7 +44,8 @@ export default function configureStore(history: any, initialState: any) {
   });
 
   // Create store with reducers and initial state
-  let store = createStoreWithFirebase(
+
+  const store = createStore(
     rootReducer,
     initialState,
     compose(applyMiddleware(...middleware), ...enhancers)

@@ -212,6 +212,8 @@ class PlayGameComponent extends React.Component<IProps, ITempState> {
 }
 
 const currentGame: string = 'currentGame';
+//const currentStory: string = 'currentStory';
+
 
 export const PlayGame: React.ComponentClass<any> = compose<React.ComponentClass<any>>(
   gameKeyHoc({ debug: true }),

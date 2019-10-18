@@ -7,7 +7,7 @@ import { withRouter } from "react-router";
 import Layout from './core/components/Layout';
 import LoginScreen from './scenes/login/LoginScreen';
 import { PlayGame } from './scenes/play-game/PlayGame';
-import GamesPageContainer  from './scenes/game/GamesPageContainer';
+import GamesPageContainer from './scenes/game/GamesPageContainer';
 import TeamsList from './scenes/teams/TeamsList';
 import TeamFormDialog from './scenes/teams/TeamFormDialog';
 import NewGame from './scenes/new-game/NewGame';
@@ -15,6 +15,7 @@ import HomePageComponent from './scenes/home/Home';
 import StoryPage from './scenes/new-game/StoryPage';
 import ChatPage from './scenes/chat/ChatPage';
 import PageNotFound from './core/components/PageNotFound';
+
 
 const LoggedInRoutes = [
   <Route key={0} exact path='/' component={HomePageComponent} />,
