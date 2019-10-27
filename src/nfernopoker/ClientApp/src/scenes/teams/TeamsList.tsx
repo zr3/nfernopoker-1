@@ -101,7 +101,7 @@ class TeamsList extends React.Component<IProps, ITempState> {
     }
 
     return (
-      <div>
+      <React.Fragment>
         <Link to={'/teams/add'}>
           <Fab className={classes.fab} color="primary" aria-label="Add New Team">
             <Add />
@@ -114,7 +114,7 @@ class TeamsList extends React.Component<IProps, ITempState> {
 
         <DialogConfirmation isOpen={this.state.isModalOpen} onConfirm={(e: boolean) => this.handleDelete(e)}
           body="Are you sure you want to delete this team?" />
-      </div>
+      </React.Fragment>
     );
   }
 }

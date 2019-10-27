@@ -44,11 +44,11 @@ class DialogConfirmation extends React.Component<IProps> {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => this.handleClose()} color="secondary">
-            Cancle
-					</Button>
+            Cancel
+          </Button>
           <Button onClick={() => this.handleConfirmation()} color="primary" autoFocus>
             Yes
-					</Button>
+          </Button>
         </DialogActions>
       </Dialog >
     );

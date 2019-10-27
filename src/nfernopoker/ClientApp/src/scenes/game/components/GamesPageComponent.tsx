@@ -3,13 +3,16 @@ import { Card, CardMedia, CardContent, Typography, Button, Grid } from "@materia
 import { isLoaded, isEmpty } from "react-redux-firebase";
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from "react-router-dom";
+import DialogConfirmation from "../../../core/components/DialogConfirmation";
 
 interface IOwnProps {
   firebase: any
   games: Array<any>,
   history: any,
   classes: any,
-  onRemoveItem(key: string): void
+  isModalOpen: boolean,
+  onDeleteClicked(key: string): void,
+  onRemovalConfirmed(confirmed: boolean): void
 }
 
 type IProps = IOwnProps;
@@ -68,7 +71,7 @@ const GamesPage: React.StatelessComponent<IProps> = (props) => {
               </Button>
             </Link>
 
-            <Button color="secondary" onClick={() => props.onRemoveItem(key)} size="small">
+            <Button color="secondary" onClick={() => props.onDeleteClicked(key)} size="small">
               Delete
             </Button>
 
@@ -82,13 +85,20 @@ const GamesPage: React.StatelessComponent<IProps> = (props) => {
     });
   }
 
-  return (<Grid container
-    direction="row"
-    justify="flex-start"
-    alignItems="flex-start"
-    className={classes.root} spacing={2}>
-    {cards}
-  </Grid>)
+  return (
+    <React.Fragment>
+      <Grid container
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+        className={classes.root} spacing={2}>
+        {cards}
+      </Grid>
+      <DialogConfirmation
+        isOpen={props.isModalOpen} onConfirm={(e: boolean) => props.onRemovalConfirmed(e)}
+        body="Are you sure you want to delete this game?" />
+    </React.Fragment>
+  )
 
 }
 

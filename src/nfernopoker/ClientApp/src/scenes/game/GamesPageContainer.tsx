@@ -5,29 +5,44 @@ import { firebaseConnect } from "react-redux-firebase";
 import { withRouter } from "react-router";
 import GamesPage from "./components/GamesPageComponent";
 
-interface IOwnProps {
+interface IInjectedProps {
   firebase: any;
   games: Array<any>;
   history: any;
   classes: any;
 }
 
-type IProps = IOwnProps;
+type IProps = IInjectedProps;
 
 class GamesPageContainer extends React.Component<IProps, any> {
 
   constructor(props: IProps) {
     super(props);
+    this.state = {
+      selectedForDelete: null
+    }
   }
 
-  removeItem(key: string) {
-    this.props.firebase.remove(`/games/${key}`);
+  selectGame(key: string) {
+    this.setState({
+      selectedForDelete: key
+    })
+  }
+  tryToRemoveItem(confirmed: boolean, key: string) {
+    if (confirmed) {
+      this.props.firebase.remove(`/games/${key}`);
+    }
+    this.setState({
+      selectedForDelete: null
+    })
   }
 
   render() {
     return (
       <GamesPage
-        onRemoveItem={(k: string) => this.removeItem(k)}
+        isModalOpen={!!this.state.selectedForDelete}
+        onDeleteClicked={(k: string) => this.selectGame(k)}
+        onRemovalConfirmed={(confirmed: boolean) => this.tryToRemoveItem(confirmed, this.state.selectedForDelete)}
         {...this.props} />
     )
   }
@@ -39,7 +54,6 @@ export default compose(
     'games'
   ]),
   connect((state: any) => ({
-    games: state.firebase.data.games,
-    profile: state.firebase.profile
+    games: state.firebase.data.games
   })
   ))(GamesPageContainer)
